@@ -1,10 +1,9 @@
-module github.com/hacdias/webdav/v4
+module github.com/admpub/webdav/v4
 
 go 1.12
 
 require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
-	github.com/hacdias/webdav/v3 v3.2.0
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/pelletier/go-toml v1.9.0 // indirect
