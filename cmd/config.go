@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hacdias/webdav/v3/lib"
+	"github.com/admpub/webdav/v4/lib"
 	"github.com/spf13/pflag"
 	v "github.com/spf13/viper"
 	"golang.org/x/net/webdav"
@@ -20,10 +20,10 @@ func parseRules(raw []interface{}, defaultModify bool) []*lib.Rule {
 	for _, v := range raw {
 		if r, ok := v.(map[interface{}]interface{}); ok {
 			rule := &lib.Rule{
-				Regex: false,
-				Allow: false,
+				Regex:  false,
+				Allow:  false,
 				Modify: defaultModify,
-				Path:  "",
+				Path:   "",
 			}
 
 			if regex, ok := r["regex"].(bool); ok {

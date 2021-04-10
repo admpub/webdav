@@ -3,7 +3,7 @@ package main
 import (
 	"runtime"
 
-	"github.com/hacdias/webdav/v3/cmd"
+	"github.com/admpub/webdav/v4/cmd"
 )
 
 func main() {
