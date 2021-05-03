@@ -46,7 +46,7 @@ func (u User) Allowed(url string, noModification bool) bool {
 			if rule.Regexp.MatchString(url) {
 				return isAllowed
 			}
-		} else if strings.HasSuffix(rule.Path, `/`) && !has {
+		} else if !has && strings.HasSuffix(rule.Path, `/`) {
 			if strings.HasPrefix(url+`/`, rule.Path) {
 				return isAllowed
 			}
