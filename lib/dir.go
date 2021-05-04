@@ -21,10 +21,9 @@ func (w NoSniffFileInfo) ContentType(ctx context.Context) (contentType string, e
 	if mimeType := mime.TypeByExtension(path.Ext(w.FileInfo.Name())); len(mimeType) > 0 {
 		// We can figure out the mime from the extension.
 		return mimeType, nil
-	} else {
-		// We can't figure out the mime type without sniffing, call it an octet stream.
-		return MIMEDefault, nil
 	}
+	// We can't figure out the mime type without sniffing, call it an octet stream.
+	return MIMEDefault, nil
 }
 
 type WebDavDir struct {
