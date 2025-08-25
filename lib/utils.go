@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"errors"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -22,4 +23,16 @@ func isAllowedHost(allowedHosts []string, origin string) bool {
 		}
 	}
 	return false
+}
+
+var errPrefixMismatch = errors.New("webdav: prefix mismatch")
+
+func stripPrefix(p string, prefix string) (string, error) {
+	if prefix == "" {
+		return p, nil
+	}
+	if r := strings.TrimPrefix(p, prefix); len(r) < len(p) {
+		return r, nil
+	}
+	return p, errPrefixMismatch
 }
