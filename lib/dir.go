@@ -35,11 +35,6 @@ type WebDavDir struct {
 }
 
 func (d WebDavDir) Stat(ctx context.Context, name string) (os.FileInfo, error) {
-	// Skip wrapping if NoSniff is off
-	if !d.NoSniff {
-		return d.Dir.Stat(ctx, name)
-	}
-
 	info, err := d.Dir.Stat(ctx, name)
 	if err != nil {
 		return nil, err
@@ -51,18 +46,23 @@ func (d WebDavDir) Stat(ctx context.Context, name string) (os.FileInfo, error) {
 		}
 	}
 
+	// Skip wrapping if NoSniff is off
+	if !d.NoSniff {
+		return info, err
+	}
+
 	return NoSniffFileInfo{info}, nil
 }
 
 func (d WebDavDir) OpenFile(ctx context.Context, name string, flag int, perm os.FileMode) (webdav.File, error) {
-	// Skip wrapping if NoSniff is off
-	if !d.NoSniff {
-		return d.Dir.OpenFile(ctx, name, flag, perm)
-	}
-
 	file, err := d.Dir.OpenFile(ctx, name, flag, perm)
 	if err != nil {
 		return nil, err
+	}
+
+	// Skip wrapping if NoSniff is off
+	if !d.NoSniff {
+		return file, err
 	}
 
 	return WebDavFile{File: file}, nil

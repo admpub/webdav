@@ -71,11 +71,6 @@ type WebDavFS struct {
 }
 
 func (d WebDavFS) Stat(ctx context.Context, name string) (os.FileInfo, error) {
-	// Skip wrapping if NoSniff is off
-	if !d.NoSniff {
-		return d.FS.Stat(ctx, name)
-	}
-
 	info, err := d.FS.Stat(ctx, name)
 	if err != nil {
 		return nil, err
@@ -87,18 +82,23 @@ func (d WebDavFS) Stat(ctx context.Context, name string) (os.FileInfo, error) {
 		}
 	}
 
+	// Skip wrapping if NoSniff is off
+	if !d.NoSniff {
+		return info, err
+	}
+
 	return NoSniffFileInfo{info}, nil
 }
 
 func (d WebDavFS) OpenFile(ctx context.Context, name string, flag int, perm os.FileMode) (webdav.File, error) {
-	// Skip wrapping if NoSniff is off
-	if !d.NoSniff {
-		return d.FS.OpenFile(ctx, name, flag, perm)
-	}
-
 	file, err := d.FS.OpenFile(ctx, name, flag, perm)
 	if err != nil {
 		return nil, err
+	}
+
+	// Skip wrapping if NoSniff is off
+	if !d.NoSniff {
+		return file, err
 	}
 
 	return WebDavFile{File: file}, nil
