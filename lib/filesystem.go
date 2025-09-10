@@ -9,7 +9,8 @@ import (
 	"golang.org/x/net/webdav"
 )
 
-var _ webdav.FileSystem = WebDavFS{}
+var _ webdav.FileSystem = (*WebDavFS)(nil)
+var _ webdav.FileSystem = (*FS)(nil)
 
 type FSGenerator func(scope string, options map[string]string) webdav.FileSystem
 

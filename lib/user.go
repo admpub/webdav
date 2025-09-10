@@ -18,6 +18,7 @@ type Rule struct {
 
 // User contains the settings of each user.
 type User struct {
+	Global   *User
 	Username string
 	Password string
 	Scope    string
@@ -55,6 +56,10 @@ func (u User) Allowed(url string, noModification bool) bool {
 		}
 
 		i--
+	}
+
+	if u.Global != nil {
+		return u.Global.Allowed(url, noModification)
 	}
 
 	return noModification || u.Modify
