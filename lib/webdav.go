@@ -101,15 +101,16 @@ func (c *Config) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	filePath, err := stripPrefix(r.URL.Path, u.Handler.Prefix)
+	cleanedPath := cleanPath(r.URL.Path)
+	filePath, err := stripPrefix(cleanedPath, u.Handler.Prefix)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	if len(filePath) == 0 {
 		filePath = `/`
-		if !strings.HasSuffix(r.URL.Path, `/`) {
-			r.URL.Path += `/`
+		if !strings.HasSuffix(cleanedPath, `/`) {
+			cleanedPath += `/`
 		}
 	}
 
@@ -143,6 +144,9 @@ func (c *Config) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	if cleanedPath != r.URL.Path {
+		r.URL.Path = cleanedPath
+	}
 	// Runs the WebDAV.
 	u.Handler.ServeHTTP(w, r)
 }

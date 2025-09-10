@@ -78,6 +78,7 @@ func (d WebDavFS) Stat(ctx context.Context, name string) (os.FileInfo, error) {
 	}
 
 	if name != `/` && d.User != nil {
+		name = cleanPath(name)
 		if !d.User.Allowed(name, true) {
 			return nil, filepath.SkipDir
 		}

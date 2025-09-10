@@ -2,6 +2,7 @@ package lib
 
 import (
 	"errors"
+	"path"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -35,4 +36,11 @@ func stripPrefix(urlPath string, prefix string) (string, error) { // /abc /abcd/
 		return r, nil
 	}
 	return urlPath, errPrefixMismatch
+}
+
+func cleanPath(ppath string) string {
+	if !strings.HasPrefix(ppath, `/`) {
+		ppath = `/` + ppath
+	}
+	return path.Clean(ppath)
 }
