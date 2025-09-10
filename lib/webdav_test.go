@@ -44,6 +44,14 @@ func TestWebDAVHandler(t *testing.T) {
 					Path:  `/a/book`,
 				},
 				{
+					Allow: false,
+					Path:  `/b/`,
+				},
+				{
+					Allow: false,
+					Path:  `/c/`,
+				},
+				{
 					Allow: true,
 					Path:  `/d/`,
 				},
@@ -82,6 +90,20 @@ func TestWebDAVHandler(t *testing.T) {
 	assert.Equal(t, 2, len(result))
 	ppnocolor.Println(result)
 	//rec.Code, rec.Body.String(),rec.Header
+
+	req, err = http.NewRequest(`PROPFIND`, `/`, nil)
+	assert.NoError(t, err)
+	req.Header.Add("Depth", "1")
+	req.Body = io.NopCloser(bytes.NewReader(nil))
+	rec = httptest.NewRecorder()
+
+	h.ServeHTTP(rec, req)
+
+	assert.Equal(t, webdav.StatusMulti, rec.Code)
+	result, err = parseXML(rec.Body)
+	assert.NoError(t, err)
+	assert.Equal(t, 3, len(result))
+	ppnocolor.Println(result)
 }
 
 type props struct {
