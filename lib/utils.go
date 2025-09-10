@@ -32,9 +32,6 @@ func stripPrefix(urlPath string, prefix string) (string, error) { // /abc /abcd/
 		return urlPath, nil
 	}
 	if r := strings.TrimPrefix(urlPath, prefix); len(r) < len(urlPath) {
-		if len(r) == 0 {
-			r = `/`
-		}
 		return r, nil
 	}
 	return urlPath, errPrefixMismatch

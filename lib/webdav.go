@@ -106,6 +106,12 @@ func (c *Config) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
+	if len(filePath) == 0 {
+		filePath = `/`
+		if !strings.HasSuffix(r.URL.Path, `/`) {
+			r.URL.Path += `/`
+		}
+	}
 
 	// Checks for user permissions relatively to this PATH.
 	noModification := r.Method == "GET" || r.Method == "HEAD" ||
