@@ -27,12 +27,12 @@ func isAllowedHost(allowedHosts []string, origin string) bool {
 
 var errPrefixMismatch = errors.New("webdav: prefix mismatch")
 
-func stripPrefix(p string, prefix string) (string, error) {
-	if prefix == "" {
-		return p, nil
+func stripPrefix(urlPath string, prefix string) (string, error) { // /abc /abcd/
+	if len(prefix) == 0 {
+		return `/`, nil
 	}
-	if r := strings.TrimPrefix(p, prefix); len(r) < len(p) {
+	if r := strings.TrimPrefix(urlPath, prefix); len(r) < len(urlPath) {
 		return r, nil
 	}
-	return p, errPrefixMismatch
+	return urlPath, errPrefixMismatch
 }
