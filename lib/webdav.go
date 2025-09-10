@@ -3,6 +3,7 @@ package lib
 import (
 	"log"
 	"net/http"
+	"path"
 	"strings"
 )
 
@@ -100,7 +101,7 @@ func (c *Config) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-
+	r.URL.Path = path.Clean(r.URL.Path)
 	filePath, err := stripPrefix(r.URL.Path, u.Handler.Prefix)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
