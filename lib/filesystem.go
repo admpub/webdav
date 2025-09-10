@@ -72,13 +72,13 @@ type WebDavFS struct {
 }
 
 func (d WebDavFS) Stat(ctx context.Context, name string) (os.FileInfo, error) {
+	name = cleanPath(name)
 	info, err := d.FS.Stat(ctx, name)
 	if err != nil {
 		return nil, err
 	}
 
 	if name != `/` && d.User != nil {
-		name = cleanPath(name)
 		if !d.User.Allowed(name, true) {
 			return nil, filepath.SkipDir
 		}
